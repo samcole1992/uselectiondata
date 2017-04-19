@@ -5,4 +5,4 @@ I read through several tutorials on D3 and using D3 with interactive maps, I fou
 
 A difficulty I had was changing the map dynamically based on user input, specifically the selecting of a specific year. After a lot of JSON massaging, I found that I misunderstood how D3 interacts with svg, as it pertains to updating an image. Once I knew how they interacted, I was able to construct methods, specifically method callbacks, that allowed for an updated image
 
-The svg data of the map, which is from the D3 documentation, can be found locally, and the election data is all called externally. Although I may have to switch from an external AJAX call to hosting the data locally for part two of the challenge. Once I get working drafts, I will start moving this to REACT.js
+The svg data of the map, which is from the D3 documentation, can be found locally, and the election data is all called externally. Although I may have to switch from an external AJAX call to hosting the data locally for part two of the challenge. Once I get an acceptable working draft, I will start moving this to REACT.js
