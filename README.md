@@ -1,7 +1,7 @@
 My goal here is to learn how to use D3.js with svg, and
 and in doing so create an interactive map of the United States to display voting history data from the past three elections.
 
-Because of irregularities in the voting data, as well as the presence of many extremely small parties. I grouped the voter data into three variables; Democratic, Republican and 
+Because of irregularities in the voting data, as well as the presence of many extremely small parties. I grouped the voter data into three variables; Democratic, Republican and Other.
 
 I read through several tutorials on D3 and using D3 with interactive maps, I found the most useful guides to be in the D3 documentation, where they had several examples of interactive maps. I used Codepen.io for a lot of the trial and error development.
 
