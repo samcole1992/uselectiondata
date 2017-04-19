@@ -15,6 +15,46 @@
 </head>
 <body>
 <script>
+  $.ajax({
+    url:"https://raw.githubusercontent.com/TimeMagazine/presidential-election-results/master/data/results_2012.json",
+    dataType:"text",
+    success:function(data){
+      var states ={};
+      var json = $.parseJSON(data)
+      $.each(Object.values(json), function(state, results) {
+        var republican = 0;
+        var democratic = 0 ;
+        var other = 0 ;
+
+        $.each(Object.values(results), function(key,value){
+        if(value.parties.toString().includes("Republican")){
+          republican+= value.votes
+          }
+        else if(value.parties.toString().includes("Democratic")){
+          democratic+=value.votes
+        }
+        else{
+          other+=value.votes
+        }
+      })
+
+        var d=Object.values(Object.values(results))[0].abbr
+        if(republican>democratic && republican>other){
+          states[d]= {dem:democratic, rep:republican, oth:other,color:"#8B0000",abbr:d}
+        }
+        else if(democratic>republican && democratic>other) {
+         states[d]= {dem:democratic, rep:republican, oth:other,color:"#00008B",abbr:d}
+        }
+        else if(other>republican && other>democratic){
+states[d]= {dem:democratic, rep:republican, oth:other,color:"#FFD700",abbr:d}
+
+}
+      })
+
+uStates.draw("#statesvg", states);
+d3.select(self.frameElement).style("height", "800px");
+    }
+  });
 </script>
 </body>
 </html>
