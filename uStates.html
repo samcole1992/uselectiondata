@@ -2,10 +2,18 @@
 <head>
 <meta charset="utf-8">
 <div id="tooltip"></div>
+<link href="https://fonts.googleapis.com/css?family=Neuton" rel="stylesheet">
+<div class="tab">
+  <button class="date-select" data-year="04">2004</button>
+  <button class="date-select" data-year="08">2008</button>
+  <button class="date-select" data-year="12">2012</button>
+</div><h1 id="mapTitle" >Bipartisan Election Results</h1>
 
+<div id="mapContainer">
 <svg width="960" height="600" id="statesvg"></svg>
-<script src="uStates.js"></script>
+</div>
 <script src="http://d3js.org/d3.v3.min.js"></script>
+
 <style>
 .state{
   fill: none;
@@ -60,60 +68,108 @@ font-size: 50px;
   text-align:center;
 }
 
+div.tab {
+  overflow: hidden;
+  border: 1px solid #ccc;
+  background-color: #f1f1f1;
+}
+
+div.tab button {
+  background-color: inherit;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  padding: 14px 211.5px;
+  transition: 0.1s;
+  font-size: 20px;
+}
+
+div.tab button:hover {
+  background-color: #ddd;
+}
+
+div.tab button.active {
+  background-color: #ccc;
+}
+
+.tabcontent {
+  display: none;
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  border-top: none;
+}
+
 </style>
 
 </head>
 <body>
 <script>
+function tooltipHtml(n, d){	/* function to create html content string in tooltip div. */
+		  return "<h4>"+n+"</h4><table>"+
+			"<tr><td>Dem</td><td>"+(d.dem)+"</td></tr>"+
+			"<tr><td>Rep</td><td>"+(d.rep)+"</td></tr>"+
+			"<tr><td>Other</td><td>"+(d.oth)+"</td></tr>"+
+			"</table>";
+	}
 
-function tooltipHtml(n, d){
-    return "<h4>"+n+"</h4><table>"+
-    "<tr><td>Dem</td><td>"+(d.dem)+"</td></tr>"+
-    "<tr><td>Rep</td><td>"+(d.rep)+"</td></tr>"+
-    "<tr><td>Other</td><td>"+(d.oth)+"</td></tr>"+
-    "</table>";
+function mapRefresh() {
+  d3.select("#statesvg").remove()
+
+svg = d3.select("#mapContainer").append("svg");
+    svg.attr("width",960).attr("height",600).attr("id","statesvg")
 }
 
-$.ajax({
-  url:"https://raw.githubusercontent.com/TimeMagazine/presidential-election-results/master/data/results_2012.json",
-  dataType:"text",
-  success:function(data){
-    var states ={};
-    var json = $.parseJSON(data)
-    $.each(Object.values(json), function(state, results) {
-      var republican = 0;
-      var democratic = 0 ;
-      var other = 0 ;
+$('.date-select').click(function (){
+ runMap($(this).data('year'));
+  mapRefresh()
 
-      $.each(Object.values(results), function(key,value){
-      if(value.parties.toString().includes("Republican")){
-        republican+= value.votes
+});
+
+function runMap(date){
+
+  $.ajax({
+    url:"https://raw.githubusercontent.com/TimeMagazine/presidential-election-results/master/data/results_20"+ date +".json",
+    dataType:"text",
+    success:function(data){
+      var states ={};
+      var json = $.parseJSON(data)
+      $.each(Object.values(json), function(state, results) {
+        var republican = 0;
+        var democratic = 0 ;
+        var other = 0 ;
+
+        $.each(Object.values(results), function(key,value){
+        if(value.parties.toString().includes("Republican")){
+          republican+= value.votes
+          }
+        else if(value.parties.toString().includes("Democratic")){
+          democratic+=value.votes
         }
-      else if(value.parties.toString().includes("Democratic")){
-        democratic+=value.votes
-      }
-      else{
-        other+=value.votes
-      }
-    })
+        else{
+          other+=value.votes
+        }
+      })
 
-      var d=Object.values(Object.values(results))[0].abbr
-      if(republican>democratic && republican>other){
-        states[d]= {dem:democratic, rep:republican, oth:other,color:"#8B0000",abbr:d}
-      }
-      else if(democratic>republican && democratic>other) {
-       states[d]= {dem:democratic, rep:republican, oth:other,color:"#00008B",abbr:d}
-      }
-      else if(other>republican && other>democratic){
+        var d=Object.values(Object.values(results))[0].abbr
+        if(republican>democratic && republican>other){
+          states[d]= {dem:democratic, rep:republican, oth:other,color:"#8B0000",abbr:d}
+        }
+        else if(democratic>republican && democratic>other) {
+         states[d]= {dem:democratic, rep:republican, oth:other,color:"#00008B",abbr:d}
+        }
+        else if(other>republican && other>democratic){
 states[d]= {dem:democratic, rep:republican, oth:other,color:"#FFD700",abbr:d}
 
 }
-    })
+      })
 
 uStates.draw("#statesvg", states, tooltipHtml);
 d3.select(self.frameElement).style("height", "800px");
-  }
-});
+    }
+  });
+}
+
+runMap("04")
 </script>
 </body>
 </html>
