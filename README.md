@@ -1,3 +1,5 @@
+To use open in Google Chrome.
+
 My goal here is to learn how to use D3.js with svg, and
 and in doing so create an interactive map of the United States to display voting history data from the past three elections.
 
