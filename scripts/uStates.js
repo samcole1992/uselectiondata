@@ -80,8 +80,8 @@
 })();
 
 
-function tooltipHtml(n, d){	
-		  return "<h4>"+n+" "+(d.date)+"</h4><table>"+
+function tooltipHtml(n, d){
+		  return "<h4>"+n+" "+"'"+(d.date)+"</h4><table>"+
 			"<tr><td>Dem</td><td>"+(d.democratic)+"</td></tr>"+
 			"<tr><td>Rep</td><td>"+(d.republican)+"</td></tr>"+
 			"<tr><td>Other</td><td>"+(d.other)+"</td></tr>"+
