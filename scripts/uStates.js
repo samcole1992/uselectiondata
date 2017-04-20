@@ -76,7 +76,6 @@
 	this.uStates=uStates;
 })();
 
-
 function tooltipHtml(n, d){
 		  return "<h4>"+n+" "+"'"+(d.date)+"</h4><table>"+
 			"<tr><td>Dem</td><td>"+(d.democratic)+"</td></tr>"+
