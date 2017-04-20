@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link href="https://fonts.googleapis.com/css?family=Neuton" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="styles/main.css">
+    <meta charset="utf-8">
+    <title>Map Project</title>
+  </head>
+  <body>
+
+    <div class="tab">
+      <button class="date-select" data-year="04">2004</button>
+      <button class="date-select" data-year="08">2008</button>
+      <button class="date-select" data-year="12">2012</button>
+    </div>
+
+    <h1 id="mapTitle" >Bipartisan Election Results</h1>
+
+    <div id="tooltip"></div>
+
+    <div class="row">
+      <div class="col-md-9">
+        <div id="mapContainer">
+          <svg width="960" height="600" id="statesvg"></svg>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <form id="update_results_form" action="">
+          <label for="state">State Abbr:</label><br>
+          <input class="formtext"type="text" name="state"><br>
+          <label for="candidate">Candidate:</label><br>
+          <input class="formtext" type="text" name="candidate"><br>
+          <label for="party">Party:</label><br>
+          <input class="formtext" type="text" name="party"><br>
+          <label for="party">Vote Total:</label><br>
+          <input class="formtext" type="text" name="votes"><br>
+          <div style='height:20px;'></div>
+          <input id="formSubmit"type="submit" value="Submit">
+        </form>
+      </div>
+      </div>
+    </div>
+
+
+  </body>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+  <script src="http://d3js.org/d3.v3.min.js"></script>
+  <script src="scripts/uStates.js"></script>
+
+</html>

@@ -78,3 +78,91 @@
   uStates.draw("#statesvg");
 
 })();
+
+
+function tooltipHtml(n, d){	
+		  return "<h4>"+n+" "+(d.date)+"</h4><table>"+
+			"<tr><td>Dem</td><td>"+(d.democratic)+"</td></tr>"+
+			"<tr><td>Rep</td><td>"+(d.republican)+"</td></tr>"+
+			"<tr><td>Other</td><td>"+(d.other)+"</td></tr>"+
+			"</table>";
+	}
+var currentDate = '04';
+
+function mapRefresh() {
+  d3.select("#statesvg").remove()
+  svg = d3.select("#mapContainer").append("svg");
+  svg.attr("width",960).attr("height",600).attr("id","statesvg")
+}
+
+$('.date-select').click(function (){
+  currentDate = $(this).data('year');
+  mapRefresh()
+  runMap($(this).data('year'));
+});
+
+$('#update_results_form').submit(function(e) {
+  var submission = $('.formtext');
+  var inputData = [];
+  Object.values(submission).forEach(function(entry) {
+    inputData.push(entry.value)
+  })
+  mapRefresh()
+  runMap(currentDate, inputData);
+  e.preventDefault();
+});
+
+
+function runMap(date, userInput){
+      var states ={};
+  var userInput= userInput;
+d3.json(
+  "https://raw.githubusercontent.com/TimeMagazine/presidential-election-results/master/data/results_20"+ date +".json"
+, function(error,results){
+      $.each(Object.values(results), function(state, results) {
+        var republican = 0;
+        var democratic = 0 ;
+        var other = 0 ;
+        $.each(Object.values(results), function(key,value){
+        if(value.parties.toString().includes("Republican")){
+          republican+= value.votes
+          }
+        else if(value.parties.toString().includes("Democratic")){
+          democratic+=value.votes
+        }
+        else{
+          other+=value.votes
+        }
+      })
+
+
+        var d=Object.values(Object.values(results))[0].abbr
+        if(republican>democratic && republican>other){
+          states[d]= {democratic:democratic, republican:republican, other:other,color:"#8B0000",abbr:d,date:date}
+        }
+        else if(democratic>republican && democratic>other) {
+         states[d]= {democratic:democratic, republican:republican, other:other,color:"#00008B",abbr:d,date:date}
+        }
+        else if(other>republican && other>democratic){
+states[d]= {democratic:democratic, republican:republican, other:other,color:"#FFD700",abbr:d,date:date}
+
+}
+      })
+if (typeof(userInput) != "undefined"){
+        if (userInput[2] == "Democratic") {
+          states[userInput[0]].democratic = parseInt(userInput[3])
+          states[userInput[0]].color = "#00008B"
+        } else if (userInput[2] == "Republican") {
+          states[userInput[0]].color = "#8B0000"
+          states[userInput[0]].republican = parseInt(userInput[3])
+        } else {
+          states[userInput[0]].other = parseInt(userInput[3])
+          states[userInput[0]].color = "#FFD700"
+        }
+      }
+      uStates.draw("#statesvg", states, tooltipHtml);
+d3.select(self.frameElement).style("height", "800px");
+    }
+  )}
+
+runMap(currentDate)
