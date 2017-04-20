@@ -1,34 +1,100 @@
 <!DOCTYPE html>
-<head>
-<meta charset="utf-8">
-<div id="tooltip"></div>
-<link href="https://fonts.googleapis.com/css?family=Neuton" rel="stylesheet">
-<div class="tab">
-  <button class="date-select" data-year="04">2004</button>
-  <button class="date-select" data-year="08">2008</button>
-  <button class="date-select" data-year="12">2012</button>
-</div><h1 id="mapTitle" >Bipartisan Election Results</h1>
+<html>
+  <head>
+    <link href="https://fonts.googleapis.com/css?family=Neuton" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <meta charset="utf-8">
+    <title>Map Project</title>
+  </head>
+  <body>
 
-<div id="mapContainer">
-<svg width="960" height="600" id="statesvg"></svg>
-</div>
-<script src="http://d3js.org/d3.v3.min.js"></script>
+    <div class="tab">
+      <button class="date-select" data-year="04">2004</button>
+      <button class="date-select" data-year="08">2008</button>
+      <button class="date-select" data-year="12">2012</button>
+    </div>
+
+    <h1 id="mapTitle" >Bipartisan Election Results</h1>
+
+    <div id="tooltip"></div>
+
+    <div class="row">
+      <div class="col-md-9">
+        <div id="mapContainer">
+          <svg width="960" height="600" id="statesvg"></svg>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <form id="update_results_form" action="">
+          <label for="state">State:</label><br>
+          <input class="formtext"type="text" name="state"><br>
+          <label for="candidate">Candidate:</label><br>
+          <input class="formtext" type="text" name="candidate"><br>
+          <label for="party">Party:</label><br>
+          <input class="formtext" type="text" name="party"><br>
+          <label for="party">Vote Total:</label><br>
+          <input class="formtext" type="text" name="votes"><br>
+          <div style='height:20px;'></div>
+          <input id="formSubmit"type="submit" value="Submit">
+        </form>
+      </div>
+      </div>
+    </div>
+
+
+  </body>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+  <script src="http://d3js.org/d3.v3.min.js"></script>
+  <script src="uStates.js"></script>
+
+</html>
 
 <style>
-.state{
+.state {
   fill: none;
   stroke: #a9a9a9;
   stroke-width: 1;
 }
-.state:hover{
-  fill-opacity:0.5;
+
+.state:hover {
+  fill-opacity: 0.5;
 }
-#mapTitle{
-text-align: center;
-font-family: 'Neuton', serif;
-letter-spacing: 2px;
-font-size: 50px;
+
+#mapTitle {
+  text-align: center;
+  font-family: 'Neuton', serif;
+  letter-spacing: 2px;
+  font-size: 50px;
 }
+
+#mapContainer {
+  text-align: center;
+}
+
+input[type=text]:focus {
+  border: 3px solid #555;
+}
+
+input[type=submit] {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-decoration: none;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
+input[type=submit]:hover {
+  background: green;
+}
+
+.formtext {
+  font-family: 'Neuton', serif;
+  font-size: 18px;
+}
+
 #tooltip {
   position: absolute;
   text-align: center;
@@ -39,33 +105,40 @@ font-size: 50px;
   border: 1px;
   border-radius: 2px;
   pointer-events: none;
+  z-index: 99999;
 }
-#tooltip h4{
-  margin:0;
-  font-size:14px;
+
+#tooltip h4 {
+  margin: 0;
+  font-size: 14px;
 }
-#tooltip{
-  background:rgba(0,0,0,1);
-  border:1px solid grey;
-  border-radius:5px;
-  font-size:12px;
-  width:auto;
-  padding:4px;
-  color:white;
-  opacity:0;
+
+#tooltip {
+  background: rgba(0, 0, 0, 1);
+  border: 1px solid grey;
+  border-radius: 5px;
+  font-size: 12px;
+  width: auto;
+  padding: 4px;
+  color: white;
+  opacity: 0;
 }
-#tooltip table{
-  table-layout:fixed;
+
+#tooltip table {
+  table-layout: fixed;
 }
-#tooltip tr td{
-  padding:0;
-  margin:0;
+
+#tooltip tr td {
+  padding: 0;
+  margin: 0;
 }
-#tooltip tr td:nth-child(1){
-  width:50px;
+
+#tooltip tr td:nth-child(1) {
+  width: 50px;
 }
-#tooltip tr td:nth-child(2){
-  text-align:center;
+
+#tooltip tr td:nth-child(2) {
+  text-align: center;
 }
 
 div.tab {
@@ -103,73 +176,109 @@ div.tab button.active {
 
 </head>
 <body>
+
 <script>
-function tooltipHtml(n, d){	
-		  return "<h4>"+n+"</h4><table>"+
-			"<tr><td>Dem</td><td>"+(d.dem)+"</td></tr>"+
-			"<tr><td>Rep</td><td>"+(d.rep)+"</td></tr>"+
-			"<tr><td>Other</td><td>"+(d.oth)+"</td></tr>"+
-			"</table>";
-	}
+
+function tooltipHtml(n, d){	/* function to create html content string in tooltip div. */
+  return "<h4>"+n+"</h4><table>"+
+  "<tr><td>Dem</td><td>"+(d.democratic)+"</td></tr>"+
+  "<tr><td>Rep</td><td>"+(d.republican)+"</td></tr>"+
+  "<tr><td>Other</td><td>"+(d.other)+"</td></tr>"+
+  "</table>";
+}
 
 function mapRefresh() {
-  d3.select("#statesvg").remove()
-
-svg = d3.select("#mapContainer").append("svg");
-    svg.attr("width",960).attr("height",600).attr("id","statesvg")
+	d3.select("#statesvg").remove()
+	svg = d3.select("#mapContainer").append("svg");
+	svg.attr("width", 960).attr("height", 600).attr("id", "statesvg")
 }
 
-$('.date-select').click(function (){
- runMap($(this).data('year'));
-  mapRefresh()
-
+$('.date-select').click(function() {
+  currentDate = $(this).data('year');
+	runMap($(this).data('year'));
+	mapRefresh()
 });
 
-function runMap(date){
+$('#update_results_form').submit(function(e) {
+  var submission = $('.formtext');
+  var inputData = [];
+  Object.values(submission).forEach(function(entry) {
+    inputData.push(entry.value)
+  })
+  runMap(currentDate, inputData);
+	mapRefresh()
+  e.preventDefault();
+});
 
-  $.ajax({
-    url:"https://raw.githubusercontent.com/TimeMagazine/presidential-election-results/master/data/results_20"+ date +".json",
-    dataType:"text",
-    success:function(data){
-      var states ={};
-      var json = $.parseJSON(data)
-      $.each(Object.values(json), function(state, results) {
-        var republican = 0;
-        var democratic = 0 ;
-        var other = 0 ;
-
-        $.each(Object.values(results), function(key,value){
-        if(value.parties.toString().includes("Republican")){
-          republican+= value.votes
-          }
-        else if(value.parties.toString().includes("Democratic")){
-          democratic+=value.votes
+function runMap(date, userInput) {
+	var states = {};
+  userInput = userInput;
+  var test;
+	$.ajax({
+		url: "https://raw.githubusercontent.com/TimeMagazine/presidential-election-results/master/data/results_20" + date + ".json",
+		dataType: "text",
+		success: function(data) {
+			var json = $.parseJSON(data)
+			$.each(Object.values(json), function(state, results) {
+				var republican = 0;
+				var democratic = 0;
+				var other = 0;
+				$.each(Object.values(results), function(key, value) {
+					if (value.parties.toString().includes("Republican")) {
+						republican += value.votes
+					} else if (value.parties.toString().includes("Democratic")) {
+						democratic += value.votes
+					} else {
+						other += value.votes
+					}
+				})
+				var d = Object.values(Object.values(results))[0].abbr
+				if (republican > democratic && republican > other) {
+					states[d] = {
+						democratic: democratic,
+						republican: republican,
+						other: other,
+						color: "#8B0000",
+						abbr: d
+					}
+				} else if (democratic > republican && democratic > other) {
+					states[d] = {
+						democratic: democratic,
+						republican: republican,
+						other: other,
+						color: "#00008B",
+						abbr: d
+					}
+				} else if (other > republican && other > democratic) {
+					states[d] = {
+						democratic: democratic,
+						republican: republican,
+						other: other,
+						color: "#FFD700",
+						abbr: d
+					}
+				}
+			})
+      if (typeof(userInput) != "undefined"){
+        if (userInput[2] == "Democratic") {
+          states[userInput[0]].democratic = parseInt(userInput[3])
+          states[userInput[0]].color = "#00008B"
+        } else if (userInput[2] == "Republican") {
+          states[userInput[0]].color = "#8B0000"
+          states[userInput[0]].republican = parseInt(userInput[3])
+        } else {
+          states[userInput[0]].other = parseInt(userInput[3])
+          states[userInput[0]].color = "#FFD700"
         }
-        else{
-          other+=value.votes
-        }
-      })
-
-        var d=Object.values(Object.values(results))[0].abbr
-        if(republican>democratic && republican>other){
-          states[d]= {dem:democratic, rep:republican, oth:other,color:"#8B0000",abbr:d}
-        }
-        else if(democratic>republican && democratic>other) {
-         states[d]= {dem:democratic, rep:republican, oth:other,color:"#00008B",abbr:d}
-        }
-        else if(other>republican && other>democratic){
-states[d]= {dem:democratic, rep:republican, oth:other,color:"#FFD700",abbr:d}
-
+      }
+			uStates.draw("#statesvg", states, tooltipHtml);
+			d3.select(self.frameElement).style("height", "800px");
+		}
+	});
 }
-      })
 
-uStates.draw("#statesvg", states, tooltipHtml);
-d3.select(self.frameElement).style("height", "800px");
-    }
-  });
-}
+runMap(currentDate);
 
-runMap("04")
 </script>
 </body>
 </html>
