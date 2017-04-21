@@ -9,11 +9,7 @@
   </head>
   <body>
 
-    <div class="tab">
-      <button class="date-select" data-year="04">2004</button>
-      <button class="date-select" data-year="08">2008</button>
-      <button class="date-select" data-year="12">2012</button>
-    </div>
+
 
     <h1 id="mapTitle" >Bipartisan Election Results</h1>
 
@@ -25,10 +21,17 @@
           <svg width="960" height="600" id="statesvg"></svg>
         </div>
       </div>
+
       <div class="col-lg-3">
+        <div class="button">
+      <button class="date-select" data-year="04">2004</button>
+      <button class="date-select" data-year="08">2008</button>
+      <button class="date-select" data-year="12">2012</button>
+    </div>
+        </br>
         <form id="update_results_form">
           <label for="state">State:</label><br>
-          <select class="formSelect">
+    <select class="formSelect">
       <option value="AL"selected="selected">Alabama</option>
       <option value="AK">Alaska</option>
       <option value="AZ">Arizona</option>
@@ -80,7 +83,7 @@
       <option value="WI">Wisconsin</option>
       <option value="WY">Wyoming</option>
     </select>
-<br>
+          <br>
           <label for="candidate">Candidate:</label><br>
           <input class="formtext" type="text" name="candidate"><br>
           <label for="party">Party:</label><br>

@@ -88,24 +88,18 @@ input[type=submit]:hover {
   text-align: center;
 }
 
-div.tab {
-  overflow: hidden;
-  border: 1px solid #ccc;
-  background-color: #f1f1f1;
-}
 
-div.tab button {
+div.button button {
   background-color: inherit;
   cursor: pointer;
   border: none;
   outline: none;
-  padding: 14px 211.5px;
   transition: 0.1s;
   font-size: 20px;
 }
 
-div.tab button:hover {
-  background-color: #ddd;
+div.button button:hover {
+  background-color: lightblue;
 }
 
 div.tab button.active {
@@ -115,6 +109,5 @@ div.tab button.active {
 .tabcontent {
   display: none;
   padding: 6px 12px;
-  border: 1px solid #ccc;
   border-top: none;
 }
