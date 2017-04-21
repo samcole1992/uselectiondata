@@ -101,9 +101,12 @@ $('.date-select').click(function() {
 });
 
 $('#update_results_form').submit(function(e) {
-    var submission = $('.formtext');
+    var selectSubmission= $(".formSelect option:selected").val();
+    var textSubmission = $('.formtext');
     var inputData = [];
-    Object.values(submission).forEach(function(entry) {
+    inputData.push(selectSubmission)
+
+    Object.values(textSubmission).forEach(function(entry) {
         inputData.push(entry.value)
     })
     mapRefresh()
