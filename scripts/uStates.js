@@ -182,6 +182,9 @@ function runMap(date, userInput) {
             }
             uStates.draw("#statesvg", states, tooltipHtml);
             d3.select(self.frameElement).style("height", "800px");
+            $('#update_results_form').each(function(){
+              this.reset();
+            });
         }
     })
 }
