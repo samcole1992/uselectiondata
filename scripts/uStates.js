@@ -79,7 +79,7 @@ uStates.draw = function(id, data, toolTip) {
 
 	this.uStates=uStates;
 })();
-function tooltipHtml(n, d) { /* function to create html content string in tooltip div. */
+function tooltipHtml(n, d) { 
     return "<h4>" + n + " " + "'" + (d.date) + "</h4><table>" +
         "<tr><td>Dem</td><td>" + (d.democratic) + "</td></tr>" +
         "<tr><td>Rep</td><td>" + (d.republican) + "</td></tr>" +
